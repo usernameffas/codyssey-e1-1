@@ -37,11 +37,11 @@ if ! docker info >/dev/null 2>&1; then
 fi
 
 # 이전 실행 잔여 컨테이너가 있으면 안전하게 정리합니다.
-for name in e1-web e1-bind e1-volume-1 e1-volume-2 e1-ubuntu; do
+for name in e1-web e1-bind e1-volume-1 e1-volume-2 e1-ubuntu e1-ubuntu-live; do
   docker rm -f "$name" >/dev/null 2>&1 || true
 done
 
-echo "[1/8] 실행 환경 기록"
+echo "[1/9] 실행 환경 기록"
 ENV_LOG="$LOG_DIR/01-environment.log"
 : > "$ENV_LOG"
 log_run "$ENV_LOG" sw_vers
@@ -51,7 +51,7 @@ log_run "$ENV_LOG" git --version
 log_run "$ENV_LOG" docker --version
 log_run "$ENV_LOG" docker info
 
-echo "[2/8] 터미널 기본 조작 기록"
+echo "[2/9] 터미널 기본 조작 기록"
 TERM_LOG="$LOG_DIR/02-terminal.log"
 : > "$TERM_LOG"
 rm -rf "$WORK_DIR/terminal"
@@ -72,14 +72,14 @@ log_run "$TERM_LOG" rm demo-dir/renamed.txt
 log_run "$TERM_LOG" rmdir demo-dir
 cd "$ROOT_DIR"
 
-echo "[3/8] Ubuntu 24.04 권한 실습"
+echo "[3/9] Ubuntu 24.04 권한 실습"
 PERM_LOG="$LOG_DIR/03-permissions.log"
 : > "$PERM_LOG"
 log_run "$PERM_LOG" docker run --name e1-ubuntu ubuntu:24.04 bash -lc \
   'mkdir -p /practice/sample-dir; touch /practice/sample.txt; echo before; ls -ld /practice/sample.txt /practice/sample-dir; chmod 600 /practice/sample.txt; chmod 700 /practice/sample-dir; echo after; ls -ld /practice/sample.txt /practice/sample-dir'
 docker rm -f e1-ubuntu >/dev/null
 
-echo "[4/8] Docker 기본 명령 + hello-world"
+echo "[4/9] Docker 기본 명령 + hello-world"
 DOCKER_LOG="$LOG_DIR/04-docker-basic.log"
 : > "$DOCKER_LOG"
 log_run "$DOCKER_LOG" docker run --rm hello-world
@@ -88,7 +88,24 @@ log_run "$DOCKER_LOG" docker images
 log_run "$DOCKER_LOG" docker ps
 log_run "$DOCKER_LOG" docker ps -a
 
-echo "[5/8] Dockerfile 빌드 + 포트 매핑"
+echo "[5/9] Ubuntu 실행 유지 + docker exec 관찰"
+CONTAINER_LOG="$LOG_DIR/04b-container-exec-attach.log"
+: > "$CONTAINER_LOG"
+log_run "$CONTAINER_LOG" docker run -d --name e1-ubuntu-live ubuntu:24.04 sleep 60
+log_run "$CONTAINER_LOG" docker ps --filter name=e1-ubuntu-live
+log_run "$CONTAINER_LOG" docker exec e1-ubuntu-live sh -c 'echo "hello from exec"; ls / | head'
+log_run "$CONTAINER_LOG" docker ps --filter name=e1-ubuntu-live
+{
+  echo
+  echo "관찰 정리"
+  echo "- docker exec: 실행 중인 컨테이너 안에서 새 명령/프로세스를 실행한다."
+  echo "- 위 로그에서 exec 명령이 끝난 뒤에도 e1-ubuntu-live 컨테이너가 Up 상태로 유지된다."
+  echo "- docker attach: 새 프로세스를 만드는 것이 아니라 컨테이너의 메인 프로세스 표준입출력에 연결한다."
+  echo "- 자동 스크립트에서는 attach가 터미널을 점유할 수 있어 실제 attach 대신 차이를 기록한다."
+} | tee -a "$CONTAINER_LOG"
+docker rm -f e1-ubuntu-live >/dev/null
+
+echo "[6/9] Dockerfile 빌드 + 포트 매핑"
 WEB_LOG="$LOG_DIR/05-web-and-port.log"
 : > "$WEB_LOG"
 cd "$ROOT_DIR"
@@ -99,7 +116,7 @@ log_run "$WEB_LOG" curl -fsS http://localhost:8080
 log_run "$WEB_LOG" docker logs e1-web
 log_run "$WEB_LOG" docker stats --no-stream e1-web
 
-echo "[6/8] 바인드 마운트(bind mount) 반영 확인"
+echo "[7/9] 바인드 마운트(bind mount) 반영 확인"
 BIND_LOG="$LOG_DIR/06-bind-mount.log"
 : > "$BIND_LOG"
 log_run "$BIND_LOG" docker run -d --name e1-bind -p 8081:80 -v "$ROOT_DIR/site:/usr/share/nginx/html:ro" nginx:alpine
@@ -108,7 +125,7 @@ log_run "$BIND_LOG" curl -fsS http://localhost:8081
 printf '<!doctype html><meta charset="utf-8"><h1>Bind Mount Updated</h1>\n' > "$ROOT_DIR/site/bind-proof.html"
 log_run "$BIND_LOG" curl -fsS http://localhost:8081/bind-proof.html
 
-echo "[7/8] Named Volume(이름 있는 볼륨) 영속성 확인"
+echo "[8/9] Named Volume(이름 있는 볼륨) 영속성 확인"
 VOL_LOG="$LOG_DIR/07-volume.log"
 : > "$VOL_LOG"
 docker volume rm e1-data >/dev/null 2>&1 || true
@@ -118,16 +135,16 @@ log_run "$VOL_LOG" docker rm e1-volume-1
 log_run "$VOL_LOG" docker run --name e1-volume-2 -v e1-data:/data ubuntu:24.04 cat /data/proof.txt
 log_run "$VOL_LOG" docker rm e1-volume-2
 
-echo "[8/8] Git/GitHub 설정 기록"
+echo "[9/9] Git/GitHub 설정 기록"
 GIT_LOG="$LOG_DIR/08-git.log"
 : > "$GIT_LOG"
 log_run "$GIT_LOG" git config --list
 log_run "$GIT_LOG" git remote -v || true
 log_run "$GIT_LOG" git status
 
-# 컨테이너는 증거 확인 후에도 PC 자원을 잡지 않도록 종료합니다.
+# 자동 실습 컨테이너를 정리합니다.
 docker rm -f e1-web e1-bind >/dev/null 2>&1 || true
 
 echo
 echo "완료: 필수 실습 로그가 docs/logs/ 에 저장되었습니다."
-echo "남은 수동 증거: 브라우저에서 localhost:8080 접속 화면과 VSCode GitHub 로그인 화면을 캡처하세요."
+echo "남은 수동 증거: 브라우저 localhost:8080 화면과 VSCode GitHub 로그인 화면을 캡처하세요."
