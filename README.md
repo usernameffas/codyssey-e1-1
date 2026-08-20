@@ -49,8 +49,8 @@ chmod +x scripts/*.sh
 - [x] Bind Mount(바인드 마운트) 변경 반영 확인
 - [x] Named Volume(이름 있는 볼륨) 영속성 확인
 - [x] Git 설정/원격 저장소 상태 기록
-- [ ] 브라우저 주소창이 보이는 접속 화면 캡처
-- [ ] VSCode GitHub 로그인/연동 화면 캡처
+- [x] 브라우저 주소창이 보이는 접속 화면 캡처
+- [x] VSCode GitHub 로그인/연동 화면 캡처
 
 마지막 두 항목은 GUI(Graphical User Interface, 화면 인터페이스) 증거라 자동화할 수 없으므로 직접 캡처합니다.
 
@@ -194,3 +194,19 @@ docker run -d --name e1-web -p 8080:80 codyssey-e1-1-web:1.0
 2. VSCode에서 GitHub 계정 로그인 + 이 저장소가 열린 화면 캡처
 
 캡처에는 Token(토큰), Password(비밀번호), Private Key(개인키)를 노출하지 않습니다.
+
+
+## 13. 실행 증거
+
+### Port Mapping(포트 매핑) 브라우저 접속
+
+아래 화면은 Docker 컨테이너의 80번 포트를 Mac의 8080번 포트에 연결한 뒤,
+`http://localhost:8080`으로 정상 접속한 증거입니다.
+
+![웹 서버 포트 매핑 접속 증거](docs/screenshots/web-port.png)
+
+### VSCode + GitHub 연동
+
+아래 화면은 VSCode에서 이 저장소를 열고 GitHub 계정으로 로그인한 상태를 보여줍니다.
+
+![VSCode GitHub 연동 증거](docs/screenshots/vscode-github.png)
