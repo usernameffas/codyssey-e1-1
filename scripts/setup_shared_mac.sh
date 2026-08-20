@@ -20,8 +20,13 @@ fi
 
 # OrbStack이 있을 수 있는 대표적인 위치를 순서대로 확인합니다.
 ORBSTACK_APP=""
-for candidate in   "/Applications/OrbStack.app"   "$HOME/Applications/OrbStack.app"   "$HOME/Desktop/OrbStack.app"
-do
+ORBSTACK_CANDIDATES=(
+  "/Applications/OrbStack.app"
+  "$HOME/Applications/OrbStack.app"
+  "$HOME/Desktop/OrbStack.app"
+)
+
+for candidate in "${ORBSTACK_CANDIDATES[@]}"; do
   if [[ -d "$candidate" ]]; then
     ORBSTACK_APP="$candidate"
     break
