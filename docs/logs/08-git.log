@@ -1,0 +1,36 @@
+
+$ git config --list 
+credential.helper=osxkeychain
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+core.ignorecase=true
+core.precomposeunicode=true
+remote.origin.url=https://github.com/usernameffas/codyssey-e1-1.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.main.remote=origin
+branch.main.merge=refs/heads/main
+
+$ git remote -v 
+origin	https://github.com/usernameffas/codyssey-e1-1.git (fetch)
+origin	https://github.com/usernameffas/codyssey-e1-1.git (push)
+
+$ git status 
+현재 브랜치 main
+브랜치가 'origin/main'에 맞게 업데이트된 상태입니다.
+
+커밋하도록 정하지 않은 변경 사항:
+  (무엇을 커밋할지 바꾸려면 "git add <파일>..."을 사용하십시오)
+  (use "git restore <file>..." to discard changes in working directory)
+	수정함:        scripts/run_required.sh
+	수정함:        scripts/setup_mac.sh
+
+추적하지 않는 파일:
+  (커밋할 사항에 포함하려면 "git add <파일>..."을 사용하십시오)
+	.practice/
+	docs/
+	site/bind-proof.html
+
+커밋할 변경 사항을 추가하지 않았습니다 ("git add" 및/또는 "git commit -a"를
+사용하십시오)

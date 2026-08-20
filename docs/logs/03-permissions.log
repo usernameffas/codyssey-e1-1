@@ -1,0 +1,16 @@
+
+$ docker run --name e1-ubuntu ubuntu:24.04 bash -lc mkdir\ -p\ /practice/sample-dir\;\ touch\ /practice/sample.txt\;\ echo\ before\;\ ls\ -ld\ /practice/sample.txt\ /practice/sample-dir\;\ chmod\ 600\ /practice/sample.txt\;\ chmod\ 700\ /practice/sample-dir\;\ echo\ after\;\ ls\ -ld\ /practice/sample.txt\ /practice/sample-dir 
+Unable to find image 'ubuntu:24.04' locally
+24.04: Pulling from library/ubuntu
+0926a8eb0e60: Pulling fs layer
+0926a8eb0e60: Download complete
+989d374f715e: Download complete
+0926a8eb0e60: Pull complete
+Digest: sha256:33ceb71981b602c1a7443a53469e4dba065f7503eab3078a2d7a57a2ab987517
+Status: Downloaded newer image for ubuntu:24.04
+before
+drwxr-xr-x 1 root root 0 Aug 20 13:23 /practice/sample-dir
+-rw-r--r-- 1 root root 0 Aug 20 13:23 /practice/sample.txt
+after
+drwx------ 1 root root 0 Aug 20 13:23 /practice/sample-dir
+-rw------- 1 root root 0 Aug 20 13:23 /practice/sample.txt

@@ -1,0 +1,30 @@
+
+$ docker run -d --name e1-ubuntu-live ubuntu:24.04 sleep 60 
+1b056b33e0977526c1fcd54fae3b2a9b1df75c07af7408d13fa4b318f3ec4eb8
+
+$ docker ps --filter name=e1-ubuntu-live 
+CONTAINER ID   IMAGE          COMMAND      CREATED        STATUS                  PORTS     NAMES
+1b056b33e097   ubuntu:24.04   "sleep 60"   1 second ago   Up Less than a second             e1-ubuntu-live
+
+$ docker exec e1-ubuntu-live sh -c echo\ \"hello\ from\ exec\"\;\ ls\ /\ \|\ head 
+hello from exec
+bin
+boot
+dev
+etc
+home
+lib
+lib64
+media
+mnt
+opt
+
+$ docker ps --filter name=e1-ubuntu-live 
+CONTAINER ID   IMAGE          COMMAND      CREATED        STATUS                  PORTS     NAMES
+1b056b33e097   ubuntu:24.04   "sleep 60"   1 second ago   Up Less than a second             e1-ubuntu-live
+
+관찰 정리
+- docker exec: 실행 중인 컨테이너 안에서 새 명령/프로세스를 실행한다.
+- 위 로그에서 exec 명령이 끝난 뒤에도 e1-ubuntu-live 컨테이너가 Up 상태로 유지된다.
+- docker attach: 새 프로세스를 만드는 것이 아니라 컨테이너의 메인 프로세스 표준입출력에 연결한다.
+- 자동 스크립트에서는 attach가 터미널을 점유할 수 있어 실제 attach 대신 차이를 기록한다.

@@ -1,0 +1,41 @@
+
+$ pwd 
+/Users/pjh589102635/codyssey-e1-1/.practice/terminal
+
+$ ls -la 
+total 0
+drwxr-xr-x  2 pjh589102635  pjh589102635  64  8 20 22:23 .
+drwxr-xr-x  3 pjh589102635  pjh589102635  96  8 20 22:23 ..
+
+$ mkdir demo-dir 
+
+$ touch empty.txt 
+
+$ sh -c echo\ \"hello\ terminal\"\ \>\ note.txt 
+
+$ cat note.txt 
+hello terminal
+
+$ cp note.txt note-copy.txt 
+
+$ mv note-copy.txt renamed.txt 
+
+$ mv renamed.txt demo-dir/renamed.txt 
+
+$ ls -la 
+total 8
+drwxr-xr-x  5 pjh589102635  pjh589102635  160  8 20 22:23 .
+drwxr-xr-x  3 pjh589102635  pjh589102635   96  8 20 22:23 ..
+drwxr-xr-x  3 pjh589102635  pjh589102635   96  8 20 22:23 demo-dir
+-rw-r--r--  1 pjh589102635  pjh589102635    0  8 20 22:23 empty.txt
+-rw-r--r--  1 pjh589102635  pjh589102635   15  8 20 22:23 note.txt
+
+$ ls -la demo-dir 
+total 8
+drwxr-xr-x  3 pjh589102635  pjh589102635   96  8 20 22:23 .
+drwxr-xr-x  5 pjh589102635  pjh589102635  160  8 20 22:23 ..
+-rw-r--r--  1 pjh589102635  pjh589102635   15  8 20 22:23 renamed.txt
+
+$ rm demo-dir/renamed.txt 
+
+$ rmdir demo-dir 

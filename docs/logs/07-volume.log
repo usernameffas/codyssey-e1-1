@@ -1,0 +1,15 @@
+
+$ docker volume create e1-data 
+e1-data
+
+$ docker run --name e1-volume-1 -v e1-data:/data ubuntu:24.04 bash -lc echo\ persistent-data\ \>\ /data/proof.txt\ \&\&\ cat\ /data/proof.txt 
+persistent-data
+
+$ docker rm e1-volume-1 
+e1-volume-1
+
+$ docker run --name e1-volume-2 -v e1-data:/data ubuntu:24.04 cat /data/proof.txt 
+persistent-data
+
+$ docker rm e1-volume-2 
+e1-volume-2
