@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # macOS용 최소 환경 준비 스크립트
+# 개인 Mac 또는 관리자 권한이 있는 Mac용입니다.
+# 관리자 권한이 없는 공용·교육장 Mac에서는 setup_shared_mac.sh를 사용하세요.
 # 필요한 것: Homebrew, Git, OrbStack
 set -Eeuo pipefail
 
