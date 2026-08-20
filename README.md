@@ -21,20 +21,37 @@
 
 실제 버전은 자동 스크립트가 `docs/logs/01-environment.log`에 기록합니다.
 
-## 3. 가장 빠른 실행 순서
+## 3. 실행 환경에 맞는 준비 방법
 
-저장소를 Mac에 clone(복제)한 뒤 실행합니다.
+먼저 저장소를 Mac에 clone(복제)하고 스크립트 실행 권한을 설정합니다.
 
 ```bash
 git clone https://github.com/usernameffas/codyssey-e1-1.git
 cd codyssey-e1-1
 chmod +x scripts/*.sh
+```
+
+### 개인 Mac 또는 관리자 권한이 있는 Mac
+
+```bash
 ./scripts/setup_mac.sh
 ./scripts/run_required.sh
 ```
 
-`setup_mac.sh`는 필요한 최소 환경을 확인하고 OrbStack을 실행합니다.
-`run_required.sh`는 미션 필수 실습을 순서대로 실행하고 로그를 `docs/logs/`에 저장합니다.
+`setup_mac.sh`는 Homebrew, Git, OrbStack을 확인하고, 없으면 설치를 시도한 뒤 OrbStack을 실행합니다. 관리자 권한이 없는 공용·교육장 Mac에는 사용하지 않습니다.
+
+### 관리자 권한이 없는 공용·교육장 Mac
+
+```bash
+./scripts/setup_shared_mac.sh
+./scripts/run_required.sh
+```
+
+`setup_shared_mac.sh`는 프로그램을 새로 설치하지 않습니다. `/Applications`, `~/Applications`, `~/Desktop`에서 기존 OrbStack을 찾아 실행하고 Docker Engine 연결만 확인합니다.
+
+다른 사용자 소유의 OrbStack 프로세스가 남아 있으면 현재 사용자 권한으로 해결하지 못할 수 있습니다. 이 경우 임의로 프로세스를 종료하지 말고 관리자 조치, 재부팅 또는 정상 동작하는 다른 PC가 필요합니다.
+
+`run_required.sh`는 미션 필수 실습을 순서대로 실행하고 로그를 `docs/logs/`에 저장합니다. 이미 제출용 로그가 완성된 경우에는 기존 로그를 덮어쓸 수 있으므로 다시 실행할 필요가 없습니다.
 
 ## 4. 수행 체크리스트
 
